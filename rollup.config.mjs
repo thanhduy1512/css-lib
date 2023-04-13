@@ -5,6 +5,13 @@ import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 
+// CSS
+import postcss from "rollup-plugin-postcss";
+
+// Optimize and minify
+import terser from "@rollup/plugin-terser";
+import peerDepsExternal from "rollup-plugin-peer-deps-external";
+
 export default [
   {
     input: "src/index.ts",
@@ -22,14 +29,24 @@ export default [
       },
     ],
     plugins: [
+      peerDepsExternal(),
       resolve(),
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
+
+      // CSS
+      postcss(),
+
+      // Optimize and minify
+      terser(),
     ],
   },
   {
     input: "dist/esm/types/index.d.ts",
     output: [{ file: "dist/index.d.ts", format: "esm" }],
     plugins: [dts()],
+
+    // CSS
+    external: [/\.scss$/, /\.css$/],
   },
 ];

@@ -1,3 +1,5 @@
+import "./Button.scss";
+
 export interface ButtonProps {
   label: string;
 }
